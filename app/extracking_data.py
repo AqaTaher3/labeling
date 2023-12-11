@@ -28,10 +28,17 @@ def extract_info(incoming_blank_models, incoming_result):
             if result["value"]['labels'][0] == list(blanks[blank])[0]:
                 blank_key = result['value']['labels'][0]
                 blanks[blank][blank_key] += result['value']['sequence']
+
+    # print('ss',blank)
+    # for i in range(len(blank)):
+    #     for j , model in enumerate(blank[i]):
+    #         for z,n in enumerate(blank[i][model]):
+    #             n["model"] = model
+    print(blank)
     return blanks
 
 
-def create_intermediate_frames(frames_list: list):
+def create_intermediate_frames(frames_list: list, models_name):
     sorted_frames = sorted(frames_list, key=lambda x: x['frame'])
     frames_list = sorted_frames
     new_frames = []
@@ -45,6 +52,7 @@ def create_intermediate_frames(frames_list: list):
                 frame_ratio = (j-frame1_value) / (frame2_value - frame1_value)
                 new_frame = {
                     'frame': j,
+                    "model": models_name,
                     "enabled": frames_list[i]['enabled'],
                     'x': round((frame2['x'] - frame1['x']) * frame_ratio +
                                frame1['x'], 2),
@@ -68,7 +76,7 @@ def making_final_data(list_0):
     final_data = list_0
     for final in final_data:
         key = list(final.keys())[0]
-        final[key] = create_intermediate_frames(final[key])
+        final[key] = create_intermediate_frames(final[key], key)
     return final_data
 
 

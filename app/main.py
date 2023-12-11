@@ -58,11 +58,17 @@ def main(json_file, film_path, pixelation):
     only_models = extracting_just_models_from_incoming_data(results)
     destincted_models = destinct_extracted_model(only_models)
     extracted_data = extract_info(destincted_models, results)
+    # for i in range(len(extracted_data)):
+    #     for j , model in enumerate(extracted_data[i]):
+    #         print(model)
+    print(extracted_data)
+    exit()
     last_made_list = making_final_data(extracted_data)
     reformed_vide = codec(film_path)
     understood_video = frame_repetitioan_count_check(reformed_vide, results)
     last_changed_frames = converting_relative_size_to_absolute(
         understood_video, last_made_list)
+
     a = yeki_kardan_tamame_model_ha(last_changed_frames)
 
     adress = labeling_frames(understood_video, a, "",
