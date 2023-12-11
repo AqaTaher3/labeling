@@ -3,40 +3,6 @@ import shutil
 import json
 
 
-def printing_frames(video_path, output_path):
-    video = cv2.VideoCapture(video_path)
-    frame_width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
-    frame_height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    fps = video.get(cv2.CAP_PROP_FPS)
-    total_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
-    print(total_frames)
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter(output_path, fourcc,
-                          fps, (frame_width, frame_height))
-
-    frame_counter = 0
-    while video.isOpened():
-        ret, frame = video.read()
-        if not ret:
-            break
-
-        text = f'Frame: {frame_counter}'
-        text_size, _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
-        text_x = int((frame_width - text_size[0]) / 2)
-        text_y = int((frame_height + text_size[1]) / 2)
-        cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1,
-                    (0, 255, 0), 2, cv2.LINE_AA)
-
-        out.write(frame)
-
-        frame_counter += 1
-        print('printing', frame_counter)
-
-    video.release()
-    out.release()
-    cv2.destroyAllWindows()
-
-
 f = open('Results.json')
 Results = json.load(f)
 
@@ -45,7 +11,7 @@ def frame_repetitioan_count_check(input_video, Results):
     frames_of_label_studio = int(Results[0]['value']['framesCount'])
     with open('new_video/counted_video.mp4', 'wb'):
         pass
-    output_video = 'new_video/counted_video.mp4'
+    out_put_video = 'new_video/counted_video.mp4'
 
     cap = cv2.VideoCapture(input_video)
     frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -59,7 +25,7 @@ def frame_repetitioan_count_check(input_video, Results):
 
         total_frames = frame_count + diffrent_frames
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-        out = cv2.VideoWriter(output_video, fourcc, cap.get(cv2.CAP_PROP_FPS),
+        out = cv2.VideoWriter(out_put_video, fourcc, cap.get(cv2.CAP_PROP_FPS),
                               (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
                                int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 
@@ -84,8 +50,8 @@ def frame_repetitioan_count_check(input_video, Results):
         cap.release()
         out.release()
     else:
-        shutil.copy(input_video, output_video)
-    return (output_video)
+        shutil.copy(input_video, out_put_video)
+    return (out_put_video)
 
 
 # printing_frames(v, 'print.mp4')

@@ -19,9 +19,9 @@ def detect_video_codec(filename):
 
 
 def change_video_codec(video_file, target_codec: str):
-    output_file = 'new_video/kodecked.mp4'
-    ffmpeg.input(video_file).output(output_file, vcodec=target_codec).run()
-    return output_file
+    out_put_file = 'new_video/kodecked.mp4'
+    ffmpeg.input(video_file).output(out_put_file, vcodec=target_codec).run()
+    return out_put_file
 
 
 def codec(input_video):
@@ -31,7 +31,7 @@ def codec(input_video):
     if detected == 'h264':
         print('The codec of input video file is:', detected)
         print('No need to change the codec')
-        shutil.copy(input_video, 'new_video/ked')
+        shutil.copy(input_video, 'new_video/')
         return input_video
     else:
         print('Please wait until the video file codec changes...')
@@ -40,5 +40,5 @@ def codec(input_video):
         return a
 
 
-# detect_video_codec('/home/user/Desktop/tom_va_jery.mp4')
-# codec('/home/user/Desktop/tom_va_jery.mp4')
+# detect_video_codec('/home/user/Desktop/kodecked.mp4')
+# codec('/home/user/Desktop/counted_video.mp4')
