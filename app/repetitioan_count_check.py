@@ -20,7 +20,6 @@ def printing_frames(video_path, output_path):
         if not ret:
             break
 
-        # نوشتن شماره فریم وسط هر فریم ویدیو
         text = f'Frame: {frame_counter}'
         text_size, _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
         text_x = int((frame_width - text_size[0]) / 2)
@@ -40,9 +39,6 @@ def printing_frames(video_path, output_path):
 
 f = open('Results.json')
 Results = json.load(f)
-
-# frame_repetitioan_count_check('/home/user/Desktop/tom_va_jery.mp4', Results)
-# printing_frames('/home/user/Desktop/3.mp4', '/home/user/Desktop/04.mp4')
 
 
 def frame_repetitioan_count_check(input_video, Results):
@@ -67,7 +63,6 @@ def frame_repetitioan_count_check(input_video, Results):
                               (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
                                int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 
-        # اضافه کردن فریم‌های تکراری
         frame_number = 0
         for _ in range(frame_count):
             ret, frame = cap.read()
@@ -75,12 +70,11 @@ def frame_repetitioan_count_check(input_video, Results):
                 break
             out.write(frame)
             frame_number += 1
-            # اضافه کردن فریم‌های تکراری
+
             if frame_number % (loop_frame + 1) == 0:
                 out.write(frame)
                 frame_number += 1
 
-        # اضافه کردن فریم‌های باقی‌مانده
         while frame_number < total_frames:
             ret, frame = cap.read()
             if not ret:
@@ -94,7 +88,5 @@ def frame_repetitioan_count_check(input_video, Results):
     return (output_video)
 
 
-# frame_repetitioan_count_check('/home/user/Desktop/tom_va_jery.mp4', Results)
-v = '/home/user/Desktop/counted_video.mp4'
-
 # printing_frames(v, 'print.mp4')
+# frame_repetitioan_count_check('/home/user/Desktop/tom_va_jery.mp4', Results)

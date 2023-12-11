@@ -152,3 +152,81 @@ def checkering_frames(video_file, frame_info, default_label_name="",
 
     if label_output:
         output_video.release()
+
+
+# def labeling_frames(video_file, frame_infos, default_label_name="",
+#                     label_output=None, label_color=(0, 0, 0)):
+
+#     frame_number = 0
+#     (cap, output_video) = is_output(video_file, label_output)
+
+#     while cap.isOpened() and frame_number < framesCounts:
+#         ret, frame = cap.read()
+#         if not ret:
+#             break
+#         for frame_info in frame_infos:
+#             if frame_info["frame"] == frame_number:
+#                 x, y = frame_info["x"], frame_info["y"]
+#                 width, height = frame_info["width"], frame_info["height"]
+#                 cv2.rectangle(frame, (int(x), int(y)), (int(x + width),
+#                               int(y + height)), label_color, thickness=4)
+#                 cv2.putText(frame, default_label_name, (int(x), int(y) - 15),
+#                             cv2.FONT_HERSHEY_SIMPLEX, 0.9, label_color, 2)
+#                 frame_infos.remove(frame_info)
+#                 break
+
+#         if label_output:
+#             output_video.write(frame)
+
+#         frame_number += 1
+#         if frame_number % 500 == 0:
+#             print("labeling next", frame_number, 'frames',
+#                   'for model:', default_label_name)
+
+#     cap.release()
+#     if label_output:
+#         output_video.release()
+
+
+# def labeling_frames(video_file, frame_infos, default_label_name="",
+#                     label_output=None, label_color=(0, 0, 0)):
+
+#     frame_number = 0
+#     (cap, output_video) = is_output(video_file, label_output)
+
+#     while cap.isOpened() and frame_infos:
+#         ret, frame = cap.read()
+#         if not ret:
+#             break
+#         current_frame_info = frame_infos[0]
+#         if current_frame_info["frame"] <= frame_number:
+#             x, y = current_frame_info["x"], current_frame_info["y"]
+#             width, height = current_frame_info["width"],
+#                current_frame_info["height"]
+#             cv2.rectangle(frame, (int(x), int(y)), (int(x + width),
+#                           int(y + height)), label_color, thickness=4)
+#             cv2.putText(frame, default_label_name, (int(x), int(y) - 15),
+#                         cv2.FONT_HERSHEY_SIMPLEX, 0.9, label_color, 2)
+#             frame_infos = frame_infos[1:]
+
+#         if label_output:
+#             output_video.write(frame)
+
+#         frame_number += 1
+#         if frame_number % 500 == 0:
+#             print("labeling next", frame_number, 'frames',
+#                   'for model:', default_label_name)
+
+#     cap.release()
+#     if label_output:
+#         output_video.release()
+
+# f = open('Resultsss.json')
+# data = json.load(f)
+# g = data[0]['Tom']
+# f.close()
+
+# a = '/home/user/Desktop/counted_video.mp4'
+# boo = '/home/user/Desktop/counted_videooooo.mp4'
+
+# labeling_frames(a, g, '', boo, label_color=(0, 0, 0))

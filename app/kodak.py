@@ -28,17 +28,17 @@ def codec(input_video):
     print('barresi_codec')
     detected = detect_video_codec(input_video)
 
-    if detected == 'mpeg4':
+    if detected == 'h264':
         print('The codec of input video file is:', detected)
         print('No need to change the codec')
         shutil.copy(input_video, 'new_video/ked')
         return input_video
     else:
         print('Please wait until the video file codec changes...')
-        a = change_video_codec(input_video, 'mpeg4')
+        a = change_video_codec(input_video, 'h264')
         print(detect_video_codec(a))
         return a
 
 
-# codec('/home/user/Desktop/tom_va_jery.mp4')
 # detect_video_codec('/home/user/Desktop/tom_va_jery.mp4')
+# codec('/home/user/Desktop/tom_va_jery.mp4')
