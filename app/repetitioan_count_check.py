@@ -1,10 +1,5 @@
 import cv2
 import shutil
-import json
-
-
-f = open('Results.json')
-Results = json.load(f)
 
 
 def frame_repetitioan_count_check(input_video, Results):

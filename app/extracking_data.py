@@ -82,8 +82,8 @@ def calculate_relevant_dimensions(video_for_converting):
 
 def converting_relative_size_to_absolute(video_for_converting,
                                          relative_list: list):
-    (original_width, original_height) = calculate_relevant_dimensions
-    (video_for_converting)
+    original_width = calculate_relevant_dimensions(video_for_converting)[0]
+    original_height = calculate_relevant_dimensions(video_for_converting)[1]
     list = relative_list
     for rel in list:
         for item in rel.values():
