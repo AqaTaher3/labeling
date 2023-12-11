@@ -1,0 +1,44 @@
+import shutil
+import ffmpeg
+
+target_codec = 'libx264'
+
+
+def detect_video_codec(filename):
+    try:
+        probe = ffmpeg.probe(filename)
+        video_stream = next(s for s in probe['streams']
+                            if s['codec_type'] == 'video')
+        codec_name = video_stream['codec_name']
+        print("Video codec: ", codec_name)
+        return codec_name
+    except ffmpeg.Error as e:
+        print(f"{e.stderr.decode('utf-8')}")
+    except Exception as e:
+        print("Error: ", str(e))
+
+
+def change_video_codec(video_file, target_codec: str):
+    output_file = 'new_video/kodecked.mp4'
+    ffmpeg.input(video_file).output(output_file, vcodec=target_codec).run()
+    return output_file
+
+
+def codec(input_video):
+    print('barresi_codec')
+    detected = detect_video_codec(input_video)
+
+    if detected == 'mpeg4':
+        print('The codec of input video file is:', detected)
+        print('No need to change the codec')
+        shutil.copy(input_video, 'new_video/ked')
+        return input_video
+    else:
+        print('Please wait until the video file codec changes...')
+        a = change_video_codec(input_video, 'mpeg4')
+        print(detect_video_codec(a))
+        return a
+
+
+# codec('/home/user/Desktop/tom_va_jery.mp4')
+# detect_video_codec('/home/user/Desktop/tom_va_jery.mp4')
