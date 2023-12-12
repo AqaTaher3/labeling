@@ -65,9 +65,10 @@ def create_intermediate_frames(frames_list: list, models_name):
                             }
                 new_frames.append(new_frame)
         else:
+            frames_list[i]['model'] = 'model'
             new_frames.append(frames_list[i])
             i + 1
-
+    frames_list[-1]['model'] = 'model'
     new_frames.append(frames_list[-1])
     return new_frames
 
@@ -77,6 +78,7 @@ def making_final_data(list_0):
     for final in final_data:
         key = list(final.keys())[0]
         final[key] = create_intermediate_frames(final[key], key)
+        print(final[key])
     return final_data
 
 

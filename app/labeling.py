@@ -22,18 +22,24 @@ def is_out_put(video_file, label_out_put):
         return cap, None, None
 
 
-def draw_label_for_label(frame, label_info, default_label_name, label_color):
+def put_text(frame, label_info, default_label_name, label_color):
     x, y = label_info["x"], label_info["y"]
     width, height = label_info["width"], label_info["height"]
-    cv2.rectangle(frame, (int(x), int(y)), (int(x + width),
-                  int(y + height)), label_color, thickness=4)
     cv2.putText(frame, default_label_name, (int(x), int(y) - 15),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9, label_color, 2)
+    return (x, y, width, height)
+
+
+def draw_label_for_label(frame, label_info, default_label_name, label_color):
+    (x, y, width, height) = put_text(frame, label_info, default_label_name,
+                                     label_color)
+    cv2.rectangle(frame, (int(x), int(y)), (int(x + width),
+                  int(y + height)), label_color, thickness=4)
 
 
 def draw_label_for_blur(frame, label_info, default_label_name, label_color):
-    x, y = label_info["x"], label_info["y"]
-    width, height = label_info["width"], label_info["height"]
+    (x, y, width, height) = put_text(frame, label_info, default_label_name,
+                                     label_color)
     roi = frame[int(y):int(y+height), int(x):int(x+width)]
     blurred_roi = cv2.GaussianBlur(roi, (25, 25), 0)
     frame[int(y):int(y+height), int(x):int(x+width)] = blurred_roi
@@ -41,13 +47,11 @@ def draw_label_for_blur(frame, label_info, default_label_name, label_color):
     cv2.rectangle(frame, (label_box_coords[0], label_box_coords[1]),
                   (label_box_coords[2], label_box_coords[3]),
                   label_color, cv2.FILLED)
-    cv2.putText(frame, default_label_name, (int(x), int(y) - 15),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.9, label_color, 2)
 
 
 def draw_label_for_chess(frame, label_info, default_label_name, label_color):
-    x, y = label_info["x"], label_info["y"]
-    width, height = label_info["width"], label_info["height"]
+    (x, y, width, height) = put_text(frame, label_info, default_label_name,
+                                     label_color)
     try:
         for i in range(int(x), int(x + width), int(width / 8)):
             for j in range(int(y), int(y + height), int(height / 8)):
@@ -71,13 +75,11 @@ def draw_label_for_chess(frame, label_info, default_label_name, label_color):
     cv2.rectangle(frame, (label_box_coords[0], label_box_coords[1]),
                   (label_box_coords[2], label_box_coords[3]),
                   label_color, cv2.FILLED)
-    cv2.putText(frame, default_label_name, (int(x), int(y) - 15),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.7, label_color, 2,
-                cv2.LINE_AA)
 
 
-def labeling_frames(video_file, frame_info, default_label_name="",
+def labeling_frames(video_file, frames_infos_list, default_label_name="",
                     label_out_put=None, L="label", label_color=(0, 0, 0)):
+
     cap, out_put_video, frame_number = is_out_put(video_file, label_out_put)
 
     while cap.isOpened():
@@ -85,16 +87,18 @@ def labeling_frames(video_file, frame_info, default_label_name="",
         if not ret:
             break
 
-        for info in frame_info:
-            if info['frame'] == frame_number:
+        for frames_info in frames_infos_list:
+            if frames_info['frame'] == frame_number:
+                def_model = frames_info['model']
+
                 if L == 'label':
-                    draw_label_for_label(frame, info, default_label_name,
+                    draw_label_for_label(frame, frames_info, def_model,
                                          label_color)
                 elif L == 'blur':
-                    draw_label_for_blur(frame, info, default_label_name,
+                    draw_label_for_blur(frame, frame, default_label_name,
                                         label_color)
                 elif L == 'checkered':
-                    draw_label_for_chess(frame, info, default_label_name,
+                    draw_label_for_chess(frame, frame, default_label_name,
                                          label_color)
         if label_out_put:
             out_put_video.write(frame)

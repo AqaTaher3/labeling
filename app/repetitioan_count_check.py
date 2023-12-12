@@ -4,9 +4,9 @@ import shutil
 
 def frame_repetitioan_count_check(input_video, Results):
     frames_of_label_studio = int(Results[0]['value']['framesCount'])
-    with open('new_video/counted_video.mp4', 'wb'):
+    with open('app/new_video/counted_video.mp4', 'wb'):
         pass
-    out_put_video = 'new_video/counted_video.mp4'
+    out_put_video = 'app/new_video/counted_video.mp4'
 
     cap = cv2.VideoCapture(input_video)
     frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))

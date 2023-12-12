@@ -6,7 +6,7 @@ __pycache__/
 # C extensions
 *.so
 app/final_works/
-app/new_videos
+app/app/new_videos
 # Distribution / packaging
 .Python
 build/
