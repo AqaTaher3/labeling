@@ -1,7 +1,8 @@
 import shutil
 import ffmpeg
-
+import os
 target_codec = 'libx264'
+current_directory = os.getcwd()
 
 
 def detect_video_codec(filename):
@@ -19,9 +20,7 @@ def detect_video_codec(filename):
 
 
 def change_video_codec(video_file, target_codec: str):
-    # with open('app/new_video/kodecked.mp4', 'wb'):
-    #     pass
-    out_put_file = 'app/new_video/kodecked.mp4'
+    out_put_file = current_directory+'/new_video/kodecked.mp4'
     ffmpeg.input(video_file).output(out_put_file, vcodec=target_codec).run()
     return out_put_file
 
@@ -40,5 +39,3 @@ def codec(input_video):
         a = change_video_codec(input_video, target_codec)
         print(detect_video_codec(a))
         return a
-# a = '/home/user/Desktop/counted_video.mp4'
-# b = codec(a)

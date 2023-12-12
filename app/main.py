@@ -11,6 +11,10 @@ from labeling import labeling_frames
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
+current_directory = os.getcwd()
+parent_directory = os.path.dirname(current_directory)
+# base = os.path.join((base_dir+'/label'))
+
 print('<------------------ا>    In The Name Of God     <ا------------------>')
 
 
@@ -50,10 +54,9 @@ def delete_directory_contents(directory: any):
 
 def main(json_file, film_path, pixelation):
     directory = os.path.dirname(film_path)
-    out_put_video_name = directory + '/' + pixelation + str('.mp4')
-    print(out_put_video_name)
+    out_put_video_name = directory + '/' + pixelation + '.mp4'
     results, fps = reding_data(json_file)
-    delete_directory_contents('./app/new_video')
+    delete_directory_contents(os.path.join(current_directory + '/new_video'))
     only_models = extracting_just_models_from_incoming_data(results)
     destincted_models = destinct_extracted_model(only_models)
     extracted_data = extract_info(destincted_models, results)
@@ -67,7 +70,7 @@ def main(json_file, film_path, pixelation):
     adress = labeling_frames(understood_video, a, "",
                              out_put_video_name, pixelation, fps)
     print('here are you output adress --->>', adress)
-    delete_directory_contents('./app/new_video')
+    delete_directory_contents(current_directory + '/new_video')
 
 
 # tozihatttttttttttttttttt
@@ -75,13 +78,8 @@ print('input_json', 'input_video', 'pixeling' '\n'
       'pixeling :label OR blur OR checkered')
 # tozihatttttttttttttttttt
 
-input = input(('input_json', 'input_video', 'pixeling',
-              'pixeling :label OR blur OR checkered'))
+Json_file = (parent_directory + '/inputs/' + input('Json  ?  '))
+Video_file = (parent_directory + '/inputs/' + input('File  ?  '))
+pixelation = input('pixelation  ?  ')
 
-input = input.split(" ")
-
-# json_file = os.path.join(os.pardir) + '/input/' + input[0]
-
-json_file = 'input/'+input[0]
-video_file = 'input/'+input[1]
-main((json_file), video_file, 'label')
+main(Json_file, Video_file, pixelation)
