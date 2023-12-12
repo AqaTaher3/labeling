@@ -1,6 +1,6 @@
 FROM python:3.11
 
-WORKDIR /app_1/
+WORKDIR /Work_dir
 
 COPY ./requirements.txt ./requirements.txt
 
@@ -10,4 +10,4 @@ RUN mkdir ./input
 
 EXPOSE 8080
 
-CMD ["python3","main.py"]
+CMD ["python3","/app/main.py"]
