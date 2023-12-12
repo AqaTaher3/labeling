@@ -78,7 +78,6 @@ def making_final_data(list_0):
     for final in final_data:
         key = list(final.keys())[0]
         final[key] = create_intermediate_frames(final[key], key)
-        print(final[key])
     return final_data
 
 
@@ -86,7 +85,6 @@ def calculate_relevant_dimensions(video_for_converting):
     cap = cv2.VideoCapture(video_for_converting)
     original_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))/100
     original_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))/100
-    print('your video size', original_width, original_height)
     return (original_width, original_height)
 
 
@@ -94,6 +92,7 @@ def converting_relative_size_to_absolute(video_for_converting,
                                          relative_list: list):
     original_width = calculate_relevant_dimensions(video_for_converting)[0]
     original_height = calculate_relevant_dimensions(video_for_converting)[1]
+    print('your video size', original_width, original_height)
     list = relative_list
     for rel in list:
         for item in rel.values():

@@ -18,8 +18,11 @@ def reding_data(data):
     f = open(data)
     data = json.load(f)
     Results = data[0]["annotations"][0]["result"]
+    framesCounts = Results[0]['value']['framesCount']
+    duration = Results[0]['value']['duration']
+    fps = framesCounts/duration
     f.close()
-    return Results
+    return Results, fps
 
 
 def yeki_kardan_tamame_model_ha(kist):
@@ -42,7 +45,6 @@ def delete_directory_contents(directory: any):
         if os.path.isfile(item_path):
             os.remove(item_path)
         elif os.path.isdir(item_path):
-            # delete_directory_contents(item_path)
             os.rmdir(item_path)
 
 
@@ -50,9 +52,7 @@ def main(json_file, film_path, pixelation):
     directory = os.path.dirname(film_path)
     out_put_video_name = directory + '/' + pixelation + str('.mp4')
     print(out_put_video_name)
-    with open('/home/user/Desktop/00.mp4', 'wb'):
-        pass
-    results = reding_data(json_file)
+    results, fps = reding_data(json_file)
     delete_directory_contents('./app/new_video')
     only_models = extracting_just_models_from_incoming_data(results)
     destincted_models = destinct_extracted_model(only_models)
@@ -65,7 +65,7 @@ def main(json_file, film_path, pixelation):
     a = yeki_kardan_tamame_model_ha(last_changed_frames)
 
     adress = labeling_frames(understood_video, a, "",
-                             out_put_video_name, pixelation)
+                             out_put_video_name, pixelation, fps)
     print('here are you output adress --->>', adress)
     delete_directory_contents('./app/new_video')
 
@@ -74,4 +74,4 @@ print('input_json', 'input_video', 'pixeling' '\n'
       'pixeling :label OR blur OR checkered')
 
 main('/home/user/Desktop/aqua.json', '/home/user/Desktop/tom_va_jery.mp4',
-     'label')
+     'blur')

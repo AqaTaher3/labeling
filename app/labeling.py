@@ -1,20 +1,12 @@
 import cv2
 
-fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+codec = cv2.VideoWriter_fourcc(*'mp4v')
 
 
-def counting_video_data(result):
-    framesCounts = result[0]['value']['framesCount']
-    duration = result[0]['value']['duration']
-    fps = framesCounts/duration
-    return (duration, fps)
-
-
-def is_out_put(video_file, label_out_put):
+def is_out_put(video_file, label_out_put, fps):
     cap = cv2.VideoCapture(video_file)
     if label_out_put:
-        codec = cv2.VideoWriter_fourcc(*'mp4v')
-        out_put_video = cv2.VideoWriter(label_out_put, codec, 30.0,
+        out_put_video = cv2.VideoWriter(label_out_put, codec, fps,
                                         (int(cap.get(3)), int(cap.get(4))))
         frame_number = 0
         return cap, out_put_video, frame_number
@@ -78,9 +70,11 @@ def draw_label_for_chess(frame, label_info, default_label_name, label_color):
 
 
 def labeling_frames(video_file, frames_infos_list, default_label_name="",
-                    label_out_put=None, L="label", label_color=(0, 0, 0)):
+                    label_out_put=None, L="label", fps=30,
+                    label_color=(0, 0, 0)):
 
-    cap, out_put_video, frame_number = is_out_put(video_file, label_out_put)
+    cap, out_put_video, frame_number = is_out_put(video_file,
+                                                  label_out_put, fps)
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -95,10 +89,10 @@ def labeling_frames(video_file, frames_infos_list, default_label_name="",
                     draw_label_for_label(frame, frames_info, def_model,
                                          label_color)
                 elif L == 'blur':
-                    draw_label_for_blur(frame, frame, default_label_name,
+                    draw_label_for_blur(frame, frames_info, def_model,
                                         label_color)
                 elif L == 'checkered':
-                    draw_label_for_chess(frame, frame, default_label_name,
+                    draw_label_for_chess(frame, frames_info, def_model,
                                          label_color)
         if label_out_put:
             out_put_video.write(frame)
