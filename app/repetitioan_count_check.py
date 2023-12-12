@@ -2,15 +2,17 @@ import cv2
 import shutil
 import os
 
-current_directory = os.getcwd()
+project_directory = os.path.dirname(os.path.abspath(__file__))
+# current_directory = os.getcwd()
+print('p', project_directory)
 
-with open((current_directory+'/new_video/kodecked.mp4'), 'wb'):
+with open((project_directory+'/new_video/kodecked.mp4'), 'wb'):
     pass
 
 
 def frame_repetitioan_count_check(input_video, Results):
     frames_of_label_studio = int(Results[0]['value']['framesCount'])
-    out_put_video = current_directory+'/new_video/counted_video.mp4'
+    out_put_video = project_directory+'/new_video/counted_video.mp4'
 
     cap = cv2.VideoCapture(input_video)
     frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))

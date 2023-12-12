@@ -2,7 +2,9 @@ import shutil
 import ffmpeg
 import os
 target_codec = 'libx264'
-current_directory = os.getcwd()
+
+project_directory = os.path.dirname(os.path.abspath(__file__))
+# current_directory = os.getcwd()
 
 
 def detect_video_codec(filename):
@@ -20,7 +22,7 @@ def detect_video_codec(filename):
 
 
 def change_video_codec(video_file, target_codec: str):
-    out_put_file = current_directory+'/new_video/kodecked.mp4'
+    out_put_file = project_directory+'/new_video/kodecked.mp4'
     ffmpeg.input(video_file).output(out_put_file, vcodec=target_codec).run()
     return out_put_file
 
