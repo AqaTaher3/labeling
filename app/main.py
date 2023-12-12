@@ -70,8 +70,18 @@ def main(json_file, film_path, pixelation):
     delete_directory_contents('./app/new_video')
 
 
+# tozihatttttttttttttttttt
 print('input_json', 'input_video', 'pixeling' '\n'
       'pixeling :label OR blur OR checkered')
+# tozihatttttttttttttttttt
 
-main('/home/user/Desktop/aqua.json', '/home/user/Desktop/tom_va_jery.mp4',
-     'blur')
+input = input(('input_json', 'input_video', 'pixeling',
+              'pixeling :label OR blur OR checkered'))
+
+input = input.split(" ")
+
+# json_file = os.path.join(os.pardir) + '/input/' + input[0]
+
+json_file = 'input/'+input[0]
+video_file = 'input/'+input[1]
+main((json_file), video_file, 'label')
