@@ -3,12 +3,13 @@ import shutil
 import os
 from moviepy.config import change_settings
 from moviepy.editor import VideoFileClip
-import av
+
+
+codecc = 'h264'
 
 ffmpeg_path = shutil.which('ffmpeg')
 
 change_settings({"FFMPEG_BINARY": ffmpeg_path})
-codec = av.CodecContext.create('h264', 'w')
 project_directory = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -27,15 +28,10 @@ def extract_audio(input_video):
     return audio
 
 
-def write_video_with_audio(output_video, video_clip, audio_clip):
-    print(123, 'write_video_with_audio')
-    video_clip = video_clip.set_audio(audio_clip)
-    video_clip.write_videofile(output_video, codec=codec)
-
-
 def frame_repetition_count_check(input_video, Results):
-    frames_of_label_studio = int(Results[0]['value']['framesCount'])
     output_video = project_directory + '/new_video/counted_video.mp4'
+    clip = VideoFileClip(input_video)
+    frames_of_label_studio = int(Results[0]['value']['framesCount'])
 
     frame_count = count_frames(input_video)
     print('counts of your video frames:', frame_count)
@@ -49,13 +45,12 @@ def frame_repetition_count_check(input_video, Results):
 
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         cap = cv2.VideoCapture(input_video)
-        out = cv2.VideoWriter(output_video, fourcc, cap.get(cv2.CAP_PROP_FPS),
-                              (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
-                               int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+        fps = clip.fps
+        width, height = clip.size
+        out = cv2.VideoWriter(output_video, fourcc, fps, (width, height))
 
         frame_number = 0
         while frame_number < total_frames:
-            print((round(int((frame_number))/int(total_frames)*100, 1), "%"))
             ret, frame = cap.read()
             if not ret:
                 break
@@ -67,12 +62,15 @@ def frame_repetition_count_check(input_video, Results):
             out.write(frame)
             frame_number += 1
 
+            un_round = (frame_number/total_frames)*100
+            rounded = round(un_round, 2)
+            formatted_number = "{:.1%}".format(rounded / 100)
+            print(formatted_number)
+
         cap.release()
         out.release()
+        exit()
     else:
         shutil.copy(input_video, output_video)
-
-    audio = extract_audio(input_video)
-    write_video_with_audio(output_video, VideoFileClip(output_video),
-                           audio)
+    print(output_video)
     return output_video

@@ -69,9 +69,8 @@ def draw_label_for_chess(frame, label_info, default_label_name, label_color):
                   label_color, cv2.FILLED)
 
 
-def labeling_frames(video_file, frames_infos_list, default_label_name="",
-                    label_out_put=None, L="label", fps=30,
-                    label_color=(0, 0, 0)):
+def labeling_frames(video_file, frames_infos_list, label_out_put, fps,
+                    pixelation="label", def_label_color=(0, 0, 0)):
 
     cap, out_put_video, frame_number = is_out_put(video_file,
                                                   label_out_put, fps)
@@ -85,15 +84,15 @@ def labeling_frames(video_file, frames_infos_list, default_label_name="",
             if frames_info['frame'] == frame_number:
                 def_model = frames_info['model']
 
-                if L == 'label':
+                if pixelation == 'label':
                     draw_label_for_label(frame, frames_info, def_model,
-                                         label_color)
-                elif L == 'blur':
+                                         def_label_color)
+                elif pixelation == 'blur':
                     draw_label_for_blur(frame, frames_info, def_model,
-                                        label_color)
-                elif L == 'checkered':
+                                        def_label_color)
+                elif pixelation == 'checkered':
                     draw_label_for_chess(frame, frames_info, def_model,
-                                         label_color)
+                                         def_label_color)
         if label_out_put:
             out_put_video.write(frame)
         else:
@@ -107,3 +106,10 @@ def labeling_frames(video_file, frames_infos_list, default_label_name="",
     if label_out_put:
         out_put_video.release()
     return label_out_put
+
+
+# int = '/app/new_video/counted_video.mp4'
+# out = '/app/new_video/Best of the Best.mp4'
+# info = ''
+# fps = 25.6
+# labeling_frames()
