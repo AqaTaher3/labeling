@@ -60,7 +60,7 @@ def main(json_file, film_path, pixelation):
     directory = os.path.dirname(film_path)
     out_put_video_name = directory + '/' + pixelation + '.mp4'
     results, fps = reding_data(json_file)
-    # delete_directory_contents(os.path.join(project_directory + '/new_video'))
+    delete_directory_contents(os.path.join(project_directory + '/new_video'))
     only_models = extracting_just_models_from_incoming_data(results)
     destincted_models = destinct_extracted_model(only_models)
     extracted_data = extract_info(destincted_models, results)
@@ -73,8 +73,8 @@ def main(json_file, film_path, pixelation):
 
     print('laa****************************************')
 
-    # adress = labeling_frames(understood_video, a, "",
-    #                          out_put_video_name, pixelation, fps)
+    adress = labeling_frames(understood_video, a, "",
+                             out_put_video_name, pixelation, fps)
     print('here are you output adress --->>', adress)
     # delete_directory_contents(project_directory + '/new_video')
 

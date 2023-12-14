@@ -28,13 +28,6 @@ def extract_info(incoming_blank_models, incoming_result):
             if result["value"]['labels'][0] == list(blanks[blank])[0]:
                 blank_key = result['value']['labels'][0]
                 blanks[blank][blank_key] += result['value']['sequence']
-
-    # print('ss',blank)
-    # for i in range(len(blank)):
-    #     for j , model in enumerate(blank[i]):
-    #         for z,n in enumerate(blank[i][model]):
-    #             n["model"] = model
-    print(blank)
     return blanks
 
 

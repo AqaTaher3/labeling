@@ -3,11 +3,12 @@ import shutil
 import os
 from moviepy.config import change_settings
 from moviepy.editor import VideoFileClip
+import av
 
 ffmpeg_path = shutil.which('ffmpeg')
 
 change_settings({"FFMPEG_BINARY": ffmpeg_path})
-
+codec = av.CodecContext.create('h264', 'w')
 project_directory = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -29,7 +30,7 @@ def extract_audio(input_video):
 def write_video_with_audio(output_video, video_clip, audio_clip):
     print(123, 'write_video_with_audio')
     video_clip = video_clip.set_audio(audio_clip)
-    video_clip.write_videofile(output_video, codec="libx264")
+    video_clip.write_videofile(output_video, codec=codec)
 
 
 def frame_repetition_count_check(input_video, Results):
@@ -54,7 +55,7 @@ def frame_repetition_count_check(input_video, Results):
 
         frame_number = 0
         while frame_number < total_frames:
-            print(total_frames, 'totalll')
+            print((round(int((frame_number))/int(total_frames)*100, 1), "%"))
             ret, frame = cap.read()
             if not ret:
                 break
@@ -65,14 +66,13 @@ def frame_repetition_count_check(input_video, Results):
 
             out.write(frame)
             frame_number += 1
-            print(frame_number)
 
         cap.release()
         out.release()
-        audio = extract_audio(input_video)
-        write_video_with_audio(output_video, VideoFileClip(output_video),
-                               audio)
     else:
         shutil.copy(input_video, output_video)
 
+    audio = extract_audio(input_video)
+    write_video_with_audio(output_video, VideoFileClip(output_video),
+                           audio)
     return output_video
