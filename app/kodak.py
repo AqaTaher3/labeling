@@ -34,7 +34,7 @@ def codec(input_video):
     if detected == 'h264':
         print('The codec of input video file is:', detected)
         print('No need to change the codec')
-        shutil.copy(input_video, 'app/new_video/')
+        shutil.copy(input_video, project_directory+'/new_video/')
         return input_video
     else:
         print('Please wait until the video file codec changes...')

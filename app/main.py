@@ -6,12 +6,15 @@ from extracking_data import extract_info, \
     destinct_extracted_model, converting_relative_size_to_absolute, \
     extracting_just_models_from_incoming_data, making_final_data
 from kodak import codec
-from repetitioan_count_check import frame_repetitioan_count_check
+from repetitioan_count_check import frame_repetition_count_check
 from labeling import labeling_frames
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
 project_directory = os.path.dirname(os.path.abspath(__file__))
+base_dir = os.path.dirname(project_directory)
+
+
 # current_directory = os.getcwd()
 # parent_directory = os.path.dirname(current_directory)
 # base = os.path.join((base_dir+'/label'))
@@ -57,21 +60,23 @@ def main(json_file, film_path, pixelation):
     directory = os.path.dirname(film_path)
     out_put_video_name = directory + '/' + pixelation + '.mp4'
     results, fps = reding_data(json_file)
-    delete_directory_contents(os.path.join(project_directory + '/new_video'))
+    # delete_directory_contents(os.path.join(project_directory + '/new_video'))
     only_models = extracting_just_models_from_incoming_data(results)
     destincted_models = destinct_extracted_model(only_models)
     extracted_data = extract_info(destincted_models, results)
     last_made_list = making_final_data(extracted_data)
     reformed_vide = codec(film_path)
-    understood_video = frame_repetitioan_count_check(reformed_vide, results)
+    understood_video = frame_repetition_count_check(reformed_vide, results)
     last_changed_frames = converting_relative_size_to_absolute(
         understood_video, last_made_list)
     a = yeki_kardan_tamame_model_ha(last_changed_frames)
 
-    adress = labeling_frames(understood_video, a, "",
-                             out_put_video_name, pixelation, fps)
+    print('laa****************************************')
+
+    # adress = labeling_frames(understood_video, a, "",
+    #                          out_put_video_name, pixelation, fps)
     print('here are you output adress --->>', adress)
-    delete_directory_contents(project_directory + '/new_video')
+    # delete_directory_contents(project_directory + '/new_video')
 
 
 # tozihatttttttttttttttttt
@@ -79,8 +84,8 @@ print('input_json', 'input_video', 'pixeling' '\n'
       'pixeling :label OR blur OR checkered')
 # tozihatttttttttttttttttt
 
-Json_file = (project_directory + '/inputs/' + input('Json  ?  '))
-Video_file = (project_directory + '/inputs/' + input('File  ?  '))
+Json_file = (base_dir + '/inputs/' + input('Json  ?  '))
+Video_file = (base_dir + '/inputs/' + input('File  ?  '))
 pixelation = input('pixelation  ?  ')
 
 main(Json_file, Video_file, pixelation)
