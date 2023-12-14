@@ -2,11 +2,11 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+./app/new_video
 # C extensions
 *.so
 app/final_works/
-app/app/new_videos
+app/new_videos
 # Distribution / packaging
 .Python
 build/
