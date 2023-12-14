@@ -106,10 +106,3 @@ def labeling_frames(video_file, frames_infos_list, label_out_put, fps,
     if label_out_put:
         out_put_video.release()
     return label_out_put
-
-
-# int = '/app/new_video/counted_video.mp4'
-# out = '/app/new_video/Best of the Best.mp4'
-# info = ''
-# fps = 25.6
-# labeling_frames()

@@ -1,5 +1,8 @@
 import cv2
+import os
 
+project_directory = os.path.dirname(os.path.abspath(__file__))
+base_dir = os.path.dirname(project_directory)
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
 
@@ -35,3 +38,8 @@ def printing_frames(video_path, out_put_path):
     video.release()
     out.release()
     cv2.destroyAllWindows()
+
+
+input = base_dir + '/app/new_video/ + final.mp4'
+out = base_dir + '/app/new_video/printed.mp4'
+printing_frames(input, out)
