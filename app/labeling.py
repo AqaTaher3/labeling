@@ -3,6 +3,9 @@ import os
 
 codec = cv2.VideoWriter_fourcc(*'mp4v')
 
+ffprobe_path = os.popen('which ffprobe').read().strip()
+ffmpeg_path = os.popen('which ffmpeg').read().strip()
+
 app_dir = os.path.dirname(os.path.abspath(__file__))
 work_dir = os.path.dirname(app_dir)
 

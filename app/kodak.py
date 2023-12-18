@@ -3,6 +3,7 @@ import ffmpeg
 import os
 
 ffprobe_path = os.popen('which ffprobe').read().strip()
+ffmpeg_path = os.popen('which ffmpeg').read().strip()
 target_codec = 'libx264'
 
 app_dir = os.path.dirname(os.path.abspath(__file__))

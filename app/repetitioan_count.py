@@ -3,6 +3,9 @@ import shutil
 import os
 from moviepy.editor import VideoFileClip
 
+ffprobe_path = os.popen('which ffprobe').read().strip()
+ffmpeg_path = os.popen('which ffmpeg').read().strip()
+
 app_dir = os.path.dirname(os.path.abspath(__file__))
 codecc = 'h264'
 # app/new_video_path = shutil.which('app/new_video')
