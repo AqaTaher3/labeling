@@ -2,8 +2,10 @@ import shutil
 import ffmpeg
 import os
 
+ffprobe_path = os.popen('which ffprobe').read().strip()
 target_codec = 'libx264'
-project_directory = os.path.dirname(os.path.abspath(__file__))
+
+app_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 def detect_video_codec(filename):
@@ -21,7 +23,7 @@ def detect_video_codec(filename):
 
 
 def change_video_codec(video_file, target_codec: str):
-    out_put_file = project_directory+'/new_video/kodecked.mp4'
+    out_put_file = app_dir+'/new_video/kodecked.mp4'
     ffmpeg.input(video_file).output(out_put_file, vcodec=target_codec).run()
     return out_put_file
 
@@ -33,7 +35,7 @@ def codec(input_video):
     if detected == 'h264':
         print('The codec of input video file is:', detected)
         print('No need to change the codec')
-        shutil.copy(input_video, project_directory+'/new_video/kodeced.mp4')
+        shutil.copy(input_video, app_dir+'/new_video/kodeced.mp4')
         return input_video
     else:
         print('Please wait until the video file codec changes...')

@@ -11,29 +11,15 @@ from voice import add_audio_to_output_video
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
-project_directory = os.path.dirname(os.path.abspath(__file__))
-base_dir = os.path.dirname(project_directory)
-inputs_text_file_path = base_dir + '/inputs/input.txt'
-
-# for cacthing data with env
-# string = os.environ.get('path')
-
-
-def reding_input(input_file):
-    with open(input_file, 'r') as input_info:
-        content = input_info.readlines()
-        a = []
-        for con in content:
-            b = con.replace("\n", "")
-            a.append(b)
-        return a
-
-
-# current_directory = os.getcwd()
-# parent_directory = os.path.dirname(current_directory)
-# base = os.path.join((base_dir+'/label'))
+app_dir = os.path.dirname(os.path.abspath(__file__))
+work_dir = os.path.dirname(app_dir)
+inputs_text_file_path = work_dir+'/input/input.txt'
 
 print('<------------------ا>    In The Name Of God     <ا------------------>')
+# print(app_dir, 'afasfawffsdfg')
+# print(work_dir, 'afasfawffsdfg')
+# print(inputs_text_file_path, 'afasfawffsdfg')
+# exit()
 
 
 def reding_data(data):
@@ -48,7 +34,6 @@ def reding_data(data):
 
 
 def unite_all_models(kist):
-
     b = []
     for i in range(len(kist)):
         key = list(kist[i].keys())[0]
@@ -72,13 +57,13 @@ def delete_directory_contents(directory: any):
 
 def output_path(pixelation):
     if pixelation == 'label':
-        return (base_dir + '/inputs/'+pixelation+'ed.mp4')
+        return (work_dir + '/input/'+pixelation+'ed.mp4')
 
     if pixelation == 'blur':
-        return (base_dir + '/inputs/'+pixelation+'ed.mp4')
+        return (work_dir + '/input/'+pixelation+'ed.mp4')
 
     elif pixelation == 'checkered':
-        return (base_dir + '/inputs/'+pixelation+'.mp4')
+        return (work_dir + '/input/'+pixelation+'.mp4')
 
 
 def input_checker(json, video, label, color=None):
@@ -88,11 +73,9 @@ def input_checker(json, video, label, color=None):
 
 
 def main(json_file, film_path, pixelation, label_color=(0, 0, 0)):
-    input_checker(Json_file, Video_file, pixalation)
     final_output_path = output_path(pixelation)
-
     res, fps, = reding_data(json_file)
-    delete_directory_contents(os.path.join(project_directory + '/new_video'))
+    delete_directory_contents(app_dir+'/new_video')
     only_models = extracting_just_models_from_incoming_data(res)
     destincted_models = destinct_extracted_model(only_models)
     extracted_data = extract_info(destincted_models, res)
@@ -108,7 +91,7 @@ def main(json_file, film_path, pixelation, label_color=(0, 0, 0)):
                                              final_output_path)
 
     print('here are you output adress --->>', voiced_video)
-    delete_directory_contents(project_directory + '/new_video')
+    delete_directory_contents(app_dir+'/new_video')
 
 
 def make_color_format(input_color):
@@ -118,14 +101,24 @@ def make_color_format(input_color):
     return ((int(RGB[0]), int(RGB[1]), int(RGB[2])))
 
 
-input = reding_input(inputs_text_file_path)
+def reding_input(input_file):
+    if input_file:
+        print('input_file')
+        with open(input_file, 'r') as input_info:
+            content = input_info.readlines()
+            input = []
+            for con in content:
+                b = con.replace("\n", "")
+                input.append(b)
+            Json_file = (work_dir+'/input/' + input[0])
+            Video_file = (work_dir+'/input/' + input[1])
+            pixalation = input[2]
 
-Json_file = (base_dir + '/inputs/' + input[0])
-Video_file = (base_dir + '/inputs/' + input[1])
-pixalation = input[2]
+        input_checker(Json_file, Video_file, pixalation)
+        main(Json_file, Video_file, pixalation, make_color_format(input[3]))
+    else:
+        print('input_file_doesnt found')
 
-print(len(input))
-if len(input) == 4:
-    main(Json_file, Video_file, pixalation, make_color_format(input[3]))
-else:
-    main(Json_file, Video_file, pixalation)
+
+# print(inputs_text_file_path)
+reding_data(inputs_text_file_path)

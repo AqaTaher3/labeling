@@ -3,9 +3,10 @@ import os
 
 codec = cv2.VideoWriter_fourcc(*'mp4v')
 
-project_directory = os.path.dirname(os.path.abspath(__file__))
-output_dir = project_directory + '/new_video/'
-output_path = output_dir+'label.mp4'
+app_dir = os.path.dirname(os.path.abspath(__file__))
+work_dir = os.path.dirname(app_dir)
+
+output_path = app_dir+'/new_video/label.mp4'
 
 
 def is_out_put(video_file, label_out_put, fps):

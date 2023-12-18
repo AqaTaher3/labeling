@@ -13,7 +13,6 @@ cycler==0.12.1
 fonttools==4.46.0
 future==0.18.3
 idna==3.6
-imageio-ffmpeg==0.4.9
 importlib-resources==6.1.1
 kiwisolver==1.4.5
 packaging==23.2
@@ -25,4 +24,3 @@ six==1.16.0
 tqdm==4.66.1
 urllib3==2.1.0
 zipp==3.17.0
-imageio==2.33.1

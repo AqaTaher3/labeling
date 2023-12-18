@@ -1,13 +1,12 @@
 import cv2
 import shutil
 import os
-from moviepy.config import change_settings
 from moviepy.editor import VideoFileClip
 
-project_directory = os.path.dirname(os.path.abspath(__file__))
+app_dir = os.path.dirname(os.path.abspath(__file__))
 codecc = 'h264'
-ffmpeg_path = shutil.which('ffmpeg')
-change_settings({"FFMPEG_BINARY": ffmpeg_path})
+# app/new_video_path = shutil.which('app/new_video')
+# change_settings({"app/new_video_BINARY": app/new_video_path})
 
 
 def count_frames(input_video):
@@ -18,7 +17,7 @@ def count_frames(input_video):
 
 
 def frame_repetition_count_check(input_video, Results):
-    output_video = project_directory + '/new_video/counted_video.mp4'
+    output_video = app_dir + '/new_video/counted_video.mp4'
     clip = VideoFileClip(input_video)
     frames_of_label_studio = int(Results[0]['value']['framesCount'])
     framesCounts = Results[0]['value']['framesCount']

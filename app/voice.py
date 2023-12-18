@@ -1,7 +1,4 @@
 from moviepy.editor import VideoFileClip
-import os
-
-project_directory = os.path.dirname(os.path.abspath(__file__))
 
 
 def add_audio_to_output_video(input_video, muted_video, output_path):
@@ -22,10 +19,3 @@ def add_audio_to_output_video(input_video, muted_video, output_path):
     clip.close()
     video_0.close()
     return output_path
-
-
-# in_1 = project_directory+'/new_video/tom.mp4'
-# in_2 = project_directory+'/new_video/counted_video.mp4'
-# out = project_directory+'/new_video/voice_dar.mp4'
-
-# sedadar_kardan(in_1, in_2, out)
