@@ -1,6 +1,14 @@
+فایل ویدیویی ورودی و فایل جی سانی را داخل پوشه inputs قرار دهید
 
-print
-		incoming_json_path, 'incoming_video_path',  'pixelation', label_color
+داخل پوشه  inputs یه فایل هست به اسم input.txt
+
+در داخل فایل   inputs.txt در:
+	سطر اول اسم فایل جی سان
+    	سطر دوم اسم فایل ویدیویی
+ 	سطر سوم عمل pixalatio
+ 	سطر چهارم رنگ کارد را بنویسید
+رنگ کادر در صورت وارد نشدن
+	 به صورت اتومات روی رنگ سیاه تنظیم شده
 
 
 pixeling must be  :
@@ -9,8 +17,10 @@ pixeling must be  :
 color shuld be RGB, like this :
 		(0, 0, 0)
 		
+		
 output_path will be in :
 	/label/inputs/
+	
 	
 there is a function in test folder for:
 		printing_frame_number_on_center_the_frame

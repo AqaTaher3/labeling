@@ -13,6 +13,21 @@ fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
 project_directory = os.path.dirname(os.path.abspath(__file__))
 base_dir = os.path.dirname(project_directory)
+inputs_text_file_path = base_dir + '/inputs/input.txt'
+
+# for cacthing data with env
+# string = os.environ.get('path')
+
+
+def reding_input(input_file):
+    with open(input_file, 'r') as input_info:
+        content = input_info.readlines()
+        a = []
+        for con in content:
+            b = con.replace("\n", "")
+            a.append(b)
+        return a
+
 
 # current_directory = os.getcwd()
 # parent_directory = os.path.dirname(current_directory)
@@ -66,16 +81,14 @@ def output_path(pixelation):
         return (base_dir + '/inputs/'+pixelation+'.mp4')
 
 
-def input_checker(json, video, label, color):
-    if label == 'label' or 'blur' or 'checkered':
-        pass
-    else:
+def input_checker(json, video, label, color=None):
+    if label not in ['label', 'blur', 'checkered']:
         print('invalid_pixalation')
         exit()
 
 
 def main(json_file, film_path, pixelation, label_color=(0, 0, 0)):
-    # input_checker(Json_file, Video_file, pixalation)
+    input_checker(Json_file, Video_file, pixalation)
     final_output_path = output_path(pixelation)
 
     res, fps, = reding_data(json_file)
@@ -105,9 +118,7 @@ def make_color_format(input_color):
     return ((int(RGB[0]), int(RGB[1]), int(RGB[2])))
 
 
-string = os.environ.get()
-
-input = string.split("+")
+input = reding_input(inputs_text_file_path)
 
 Json_file = (base_dir + '/inputs/' + input[0])
 Video_file = (base_dir + '/inputs/' + input[1])
