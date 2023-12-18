@@ -105,7 +105,7 @@ def make_color_format(input_color):
     return ((int(RGB[0]), int(RGB[1]), int(RGB[2])))
 
 
-string = input()
+string = input('writw          :')
 
 input = string.split("+")
 
@@ -120,4 +120,4 @@ else:
     main(Json_file, Video_file, pixalation)
 
 
-# # aqua.json+tom.mp4+label+(256, 256, 0)
+# # aqua.json+tom.mp4+blur+(256, 256, 0)
