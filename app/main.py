@@ -16,13 +16,9 @@ work_dir = os.path.dirname(app_dir)
 inputs_text_file_path = work_dir+'/input/input.txt'
 
 print('<------------------ا>    In The Name Of God     <ا------------------>')
-# print(app_dir, 'afasfawffsdfg')
-# print(work_dir, 'afasfawffsdfg')
-# print(inputs_text_file_path, 'afasfawffsdfg')
-# exit()
 
 
-def reding_data(data):
+def reding_data_from_json(data):
     f = open(data)
     data = json.load(f)
     Results = data[0]["annotations"][0]["result"]
@@ -74,7 +70,7 @@ def input_checker(json, video, label, color=None):
 
 def main(json_file, film_path, pixelation, label_color=(0, 0, 0)):
     final_output_path = output_path(pixelation)
-    res, fps, = reding_data(json_file)
+    res, fps, = reding_data_from_json(json_file)
     delete_directory_contents(app_dir+'/new_video')
     only_models = extracting_just_models_from_incoming_data(res)
     destincted_models = destinct_extracted_model(only_models)
@@ -120,5 +116,4 @@ def reding_input(input_file):
         print('input_file_doesnt found')
 
 
-# print(inputs_text_file_path)
-reding_data(inputs_text_file_path)
+reding_input(inputs_text_file_path)
