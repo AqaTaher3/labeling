@@ -1,6 +1,11 @@
 import cv2
+import os
 
 codec = cv2.VideoWriter_fourcc(*'mp4v')
+
+project_directory = os.path.dirname(os.path.abspath(__file__))
+output_dir = project_directory + '/new_video/'
+output_path = output_dir+'label.mp4'
 
 
 def is_out_put(video_file, label_out_put, fps):
@@ -14,22 +19,22 @@ def is_out_put(video_file, label_out_put, fps):
         return cap, None, None
 
 
-def put_text(frame, label_info, default_label_name, label_color):
+def put_text(frame, label_info, label_name, label_color):
     x, y = label_info["x"], label_info["y"]
     width, height = label_info["width"], label_info["height"]
-    cv2.putText(frame, default_label_name, (int(x), int(y) - 15),
+    cv2.putText(frame, label_name, (int(x), int(y) - 15),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9, label_color, 2)
     return (x, y, width, height)
 
 
-def draw_label_for_label(frame, label_info, default_label_name, label_color):
-    (x, y, width, height) = put_text(frame, label_info, default_label_name,
+def draw_label(frame, label_info, label_name, label_color):
+    (x, y, width, height) = put_text(frame, label_info, label_name,
                                      label_color)
     cv2.rectangle(frame, (int(x), int(y)), (int(x + width),
                   int(y + height)), label_color, thickness=4)
 
 
-def draw_label_for_blur(frame, label_info, default_label_name, label_color):
+def draw_blur(frame, label_info, default_label_name, label_color):
     (x, y, width, height) = put_text(frame, label_info, default_label_name,
                                      label_color)
     roi = frame[int(y):int(y+height), int(x):int(x+width)]
@@ -41,7 +46,7 @@ def draw_label_for_blur(frame, label_info, default_label_name, label_color):
                   label_color, cv2.FILLED)
 
 
-def draw_label_for_chess(frame, label_info, default_label_name, label_color):
+def draw_chess(frame, label_info, default_label_name, label_color):
     (x, y, width, height) = put_text(frame, label_info, default_label_name,
                                      label_color)
     try:
@@ -69,11 +74,11 @@ def draw_label_for_chess(frame, label_info, default_label_name, label_color):
                   label_color, cv2.FILLED)
 
 
-def labeling_frames(video_file, frames_infos_list, label_out_put, fps,
-                    pixelation="label", def_label_color=(0, 0, 0)):
+def labeling_frames(video_file, frames_infos_list, fps,
+                    pixelation, label_colorr=(0, 0, 0)):
 
     cap, out_put_video, frame_number = is_out_put(video_file,
-                                                  label_out_put, fps)
+                                                  output_path, fps)
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -82,27 +87,24 @@ def labeling_frames(video_file, frames_infos_list, label_out_put, fps,
 
         for frames_info in frames_infos_list:
             if frames_info['frame'] == frame_number:
-                def_model = frames_info['model']
+                model_name = frames_info['model']
 
                 if pixelation == 'label':
-                    draw_label_for_label(frame, frames_info, def_model,
-                                         def_label_color)
+                    draw_label(frame, frames_info, model_name, label_colorr)
                 elif pixelation == 'blur':
-                    draw_label_for_blur(frame, frames_info, def_model,
-                                        def_label_color)
+                    draw_blur(frame, frames_info, model_name, label_colorr)
                 elif pixelation == 'checkered':
-                    draw_label_for_chess(frame, frames_info, def_model,
-                                         def_label_color)
-        if label_out_put:
+                    draw_chess(frame, frames_info, model_name, label_colorr)
+        if output_path:
             out_put_video.write(frame)
         else:
             print('unredab out_put')
             break
         frame_number += 1
         if frame_number % 500 == 0:
-            print("labeling next", frame_number, 'frames',)
+            print("labeling next", frame_number, 'frames')
 
     cap.release()
-    if label_out_put:
+    if output_path:
         out_put_video.release()
-    return label_out_put
+    return output_path

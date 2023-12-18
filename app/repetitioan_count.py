@@ -4,13 +4,10 @@ import os
 from moviepy.config import change_settings
 from moviepy.editor import VideoFileClip
 
-
-codecc = 'h264'
-
-ffmpeg_path = shutil.which('ffmpeg')
-
-change_settings({"FFMPEG_BINARY": ffmpeg_path})
 project_directory = os.path.dirname(os.path.abspath(__file__))
+codecc = 'h264'
+ffmpeg_path = shutil.which('ffmpeg')
+change_settings({"FFMPEG_BINARY": ffmpeg_path})
 
 
 def count_frames(input_video):
@@ -27,10 +24,9 @@ def frame_repetition_count_check(input_video, Results):
     framesCounts = Results[0]['value']['framesCount']
     duration = Results[0]['value']['duration']
     fps = framesCounts/duration
-    print(fps)
-
     frame_count = count_frames(input_video)
     print('counts of your video frames:', frame_count)
+
     if frames_of_label_studio > frame_count:
         print('count of your json file frames:', frames_of_label_studio)
         print('repetition_frames_count ...')

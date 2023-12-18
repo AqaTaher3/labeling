@@ -7,7 +7,7 @@ from extracking_data import extract_info, \
 from kodak import codec
 from repetitioan_count import frame_repetition_count_check
 from labeling import labeling_frames
-from voice import sedadar_kardan
+from voice import add_audio_to_output_video
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
@@ -32,7 +32,7 @@ def reding_data(data):
     return Results, fps
 
 
-def yeki_kardan_tamame_model_ha(kist):
+def unite_all_models(kist):
 
     b = []
     for i in range(len(kist)):
@@ -55,14 +55,31 @@ def delete_directory_contents(directory: any):
             os.rmdir(item_path)
 
 
-def main(json_file, film_path, pixelation):
-    # directory = os.path.dirname(film_path)
+def output_path(pixelation):
+    if pixelation == 'label':
+        return (base_dir + '/inputs/'+pixelation+'ed.mp4')
 
-    out_label = base_dir + '/app/new_video' + pixelation + '.mp4'
-    final_out_put = base_dir + '/inputs/final'+'.mp4'
+    if pixelation == 'blur':
+        return (base_dir + '/inputs/'+pixelation+'ed.mp4')
+
+    elif pixelation == 'checkered':
+        return (base_dir + '/inputs/'+pixelation+'.mp4')
+
+
+def input_checker(json, video, label, color):
+    if label == 'label' or 'blur' or 'checkered':
+        pass
+    else:
+        print('invalid_pixalation')
+        exit()
+
+
+def main(json_file, film_path, pixelation, label_color=(0, 0, 0)):
+    # input_checker(Json_file, Video_file, pixalation)
+    final_output_path = output_path(pixelation)
 
     res, fps, = reding_data(json_file)
-    # delete_directory_contents(os.path.join(project_directory + '/new_video'))
+    delete_directory_contents(os.path.join(project_directory + '/new_video'))
     only_models = extracting_just_models_from_incoming_data(res)
     destincted_models = destinct_extracted_model(only_models)
     extracted_data = extract_info(destincted_models, res)
@@ -71,30 +88,36 @@ def main(json_file, film_path, pixelation):
     understood_video = frame_repetition_count_check(reformed_vide, res)
     last_changed_frames = converting_relative_size_to_absolute(
         understood_video, last_made_list)
-    yeki_shode = yeki_kardan_tamame_model_ha(last_changed_frames)
+    united_models = unite_all_models(last_changed_frames)
+    lebeled_video_path = labeling_frames(understood_video, united_models,
+                                         fps, pixelation, label_color)
+    voiced_video = add_audio_to_output_video(reformed_vide, lebeled_video_path,
+                                             final_output_path)
 
-    print('laa****************************************')
-
-    adress = labeling_frames(understood_video, yeki_shode, out_label,
-                             fps, pixelation, (0, 0, 0))
-
-    bb = sedadar_kardan(reformed_vide, adress, final_out_put)
-
-    print('here are you output adress --->>', bb)
-    # delete_directory_contents(project_directory + '/new_video')
+    print('here are you output adress --->>', voiced_video)
+    delete_directory_contents(project_directory + '/new_video')
 
 
-# tozihatttttttttttttttttt
-print('input_json', 'input_video', 'pixeling' '\n'
-      'pixeling :label OR blur OR checkered')
-# tozihatttttttttttttttttt
+def make_color_format(input_color):
+    nospaces = input_color.replace("(", "")
+    nospaces = nospaces.replace(")", "")
+    RGB = nospaces.split(",")
+    return ((int(RGB[0]), int(RGB[1]), int(RGB[2])))
 
-# Json_file = (base_dir + '/inputs/' + input('Json  ?  '))
-# Video_file = (base_dir + '/inputs/' + input('File  ?  '))
-# pixelation = input('pixelation  ?  ')
 
-# main(Json_file, Video_file, pixelation)
-Json_file = (base_dir + '/inputs/' + 'aqua.json')
-Video_file = (base_dir + '/inputs/' + 'tom.mp4')
+string = input()
 
-main(Json_file, Video_file, 'label')
+input = string.split("+")
+
+Json_file = (base_dir + '/inputs/' + input[0])
+Video_file = (base_dir + '/inputs/' + input[1])
+pixalation = input[2]
+
+print(len(input))
+if len(input) == 4:
+    main(Json_file, Video_file, pixalation, make_color_format(input[3]))
+else:
+    main(Json_file, Video_file, pixalation)
+
+
+# # aqua.json+tom.mp4+label+(256, 256, 0)

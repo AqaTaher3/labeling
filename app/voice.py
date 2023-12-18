@@ -4,7 +4,7 @@ import os
 project_directory = os.path.dirname(os.path.abspath(__file__))
 
 
-def sedadar_kardan(input_video, muted_video, output_path):
+def add_audio_to_output_video(input_video, muted_video, output_path):
     clip = VideoFileClip(muted_video)
     clip = clip.set_fps(25)
     video_0 = VideoFileClip(input_video)

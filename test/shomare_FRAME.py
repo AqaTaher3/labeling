@@ -6,7 +6,7 @@ base_dir = os.path.dirname(project_directory)
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
 
-def printing_frames(video_path, out_put_path):
+def printing_frame_number_on_center_the_frame(video_path, out_put_path):
     video = cv2.VideoCapture(video_path)
     frame_width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -38,8 +38,3 @@ def printing_frames(video_path, out_put_path):
     video.release()
     out.release()
     cv2.destroyAllWindows()
-
-
-input = base_dir + '/app/new_video/ + final.mp4'
-out = base_dir + '/app/new_video/printed.mp4'
-printing_frames(input, out)
