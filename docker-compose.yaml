@@ -1,3 +1,4 @@
+
 version: '3'
 services:
   video_labaling:
@@ -6,8 +7,4 @@ services:
       dockerfile: Dockerfile
     volumes:
       - './inputs:/work_dir/input'
-    environment:
-      - path=${path}
-
-      
 
