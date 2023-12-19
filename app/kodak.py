@@ -1,11 +1,9 @@
+from moviepy.editor import VideoFileClip
 import shutil
 import ffmpeg
 import os
 
-ffprobe_path = os.popen('which ffprobe').read().strip()
-ffmpeg_path = os.popen('which ffmpeg').read().strip()
 target_codec = 'libx264'
-
 app_dir = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -23,10 +21,11 @@ def detect_video_codec(filename):
         print("Error: ", str(e))
 
 
-def change_video_codec(video_file, target_codec: str):
-    out_put_file = app_dir+'/new_video/kodecked.mp4'
-    ffmpeg.input(video_file).output(out_put_file, vcodec=target_codec).run()
-    return out_put_file
+def change_video_codec(video_file, target_codec):
+    output_file = app_dir + '/new_video/kodecked.mp4'
+    clip = VideoFileClip(video_file)
+    clip.write_videofile(output_file, codec=target_codec)
+    return output_file
 
 
 def codec(input_video):

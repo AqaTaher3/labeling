@@ -3,13 +3,8 @@ import shutil
 import os
 from moviepy.editor import VideoFileClip
 
-ffprobe_path = os.popen('which ffprobe').read().strip()
-ffmpeg_path = os.popen('which ffmpeg').read().strip()
-
-app_dir = os.path.dirname(os.path.abspath(__file__))
 codecc = 'h264'
-# app/new_video_path = shutil.which('app/new_video')
-# change_settings({"app/new_video_BINARY": app/new_video_path})
+app_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 def count_frames(input_video):
