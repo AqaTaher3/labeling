@@ -1,4 +1,4 @@
 aqua.json
-tomo.mp4
-blur
+tom.mp4
+checkered
 (0,0,0)

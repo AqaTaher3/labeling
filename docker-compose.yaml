@@ -1,15 +1,10 @@
+
 version: '3'
 services:
   video_labaling:
-  
     build:
-    
       context: .
       dockerfile: Dockerfile
-      
     volumes:
       - './input:/work_dir/input'
 
-    environment:      
-     - FFPROBE_PATH=/user/bin/ffprobe      
-     - FFMPEG_PATH=/user/bin/ffmpeg
