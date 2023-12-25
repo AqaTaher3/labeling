@@ -38,3 +38,5 @@ def printing_frame_number_on_center_the_frame(video_path, out_put_path):
     video.release()
     out.release()
     cv2.destroyAllWindows()
+
+printing_frame_number_on_center_the_frame('tom.mp4', '1.mp4')

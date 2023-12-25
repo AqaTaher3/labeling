@@ -5,8 +5,8 @@ from extracking_data import extract_info, \
     destinct_extracted_model, converting_relative_size_to_absolute, \
     extracting_just_models_from_incoming_data, making_final_data
 from kodak import codec
-from repetitioan_count import frame_repetition_count_check
-from labeling import labeling_frames
+from repetitioan_count import check_frame_repetition_count
+from labeling import label_frames
 from voice import add_audio_to_output_video
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
@@ -62,13 +62,14 @@ def output_path(pixelation):
         return (work_dir + '/input/'+pixelation+'.mp4')
 
 
-def input_checker(json, video, label, color=None):
+def check_pixelation(label):
     if label not in ['label', 'blur', 'checkered']:
         print('invalid_pixalation')
         exit()
 
 
-def main(json_file, film_path, pixelation, label_color=(0, 0, 0)):
+def main():
+    json_file, video_path, pixelation, label_color = read_input(inputs_text_file_path)
     final_output_path = output_path(pixelation)
     res, fps, = reding_data_from_json(json_file)
     delete_directory_contents(app_dir+'/new_video')
@@ -76,13 +77,18 @@ def main(json_file, film_path, pixelation, label_color=(0, 0, 0)):
     destincted_models = destinct_extracted_model(only_models)
     extracted_data = extract_info(destincted_models, res)
     last_made_list = making_final_data(extracted_data)
-    reformed_vide = codec(film_path)
-    understood_video = frame_repetition_count_check(reformed_vide, res)
+    reformed_vide = codec(video_path)
+    understood_video = check_frame_repetition_count(reformed_vide, res)
     last_changed_frames = converting_relative_size_to_absolute(
         understood_video, last_made_list)
     united_models = unite_all_models(last_changed_frames)
-    lebeled_video_path = labeling_frames(understood_video, united_models,
-                                         fps, pixelation, label_color)
+    lebeled_video_path = label_frames(
+        video_file=understood_video,
+        frames_info_list=united_models,
+        fps=fps,
+        pixelation=pixelation,
+        label_color=label_color,
+    )
     voiced_video = add_audio_to_output_video(reformed_vide, lebeled_video_path,
                                              final_output_path)
 
@@ -97,7 +103,7 @@ def make_color_format(input_color):
     return ((int(RGB[0]), int(RGB[1]), int(RGB[2])))
 
 
-def reding_input(input_file):
+def read_input(input_file):
     if input_file:
         print('input_file')
         with open(input_file, 'r') as input_info:
@@ -106,14 +112,15 @@ def reding_input(input_file):
             for con in content:
                 b = con.replace("\n", "")
                 input.append(b)
-            Json_file = (work_dir+'/input/' + input[0])
-            Video_file = (work_dir+'/input/' + input[1])
-            pixalation = input[2]
-
-        input_checker(Json_file, Video_file, pixalation)
-        main(Json_file, Video_file, pixalation, make_color_format(input[3]))
+            json_file = (work_dir+'/input/' + input[0])
+            video_file = (work_dir+'/input/' + input[1])
+            pixelation = input[2]
+            color = input[3]
+            label_color = make_color_format(color)
+        check_pixelation(pixelation)
+        return json_file, video_file, pixelation, label_color
     else:
         print('input_file_doesnt found')
 
+main()
 
-reding_input(inputs_text_file_path)

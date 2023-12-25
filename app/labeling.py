@@ -1,5 +1,6 @@
 import cv2
 import os
+from enum import Enum
 
 codec = cv2.VideoWriter_fourcc(*'mp4v')
 
@@ -12,13 +13,23 @@ work_dir = os.path.dirname(app_dir)
 output_path = app_dir+'/new_video/label.mp4'
 
 
-def is_out_put(video_file, label_out_put, fps):
+class Pixelation(str, Enum):
+    blur = "blur"
+    label = "label"
+    checkered = "checkered"
+
+
+def check_output_existanse(video_file, label_out_put, fps):
     cap = cv2.VideoCapture(video_file)
     if label_out_put:
-        out_put_video = cv2.VideoWriter(label_out_put, codec, fps,
-                                        (int(cap.get(3)), int(cap.get(4))))
+        output_video = cv2.VideoWriter(
+            filename=label_out_put,
+            fourcc=codec,
+            fps=fps,
+            frameSize=(int(cap.get(3)), int(cap.get(4)))
+        )
         frame_number = 0
-        return cap, out_put_video, frame_number
+        return cap, output_video, frame_number
     else:
         return cap, None, None
 
@@ -50,7 +61,7 @@ def draw_blur(frame, label_info, default_label_name, label_color):
                   label_color, cv2.FILLED)
 
 
-def draw_chess(frame, label_info, default_label_name, label_color):
+def draw_check(frame, label_info, default_label_name, label_color):
     (x, y, width, height) = put_text(frame, label_info, default_label_name,
                                      label_color)
     try:
@@ -78,27 +89,31 @@ def draw_chess(frame, label_info, default_label_name, label_color):
                   label_color, cv2.FILLED)
 
 
-def labeling_frames(video_file, frames_infos_list, fps,
-                    pixelation, label_colorr=(0, 0, 0)):
-
-    cap, out_put_video, frame_number = is_out_put(video_file,
-                                                  output_path, fps)
+def label_frames(
+    video_file,
+    frames_info_list,
+    fps,
+    pixelation,
+    label_color=(0, 0, 0)
+):
+    cap, out_put_video, frame_number = check_output_existanse(video_file, output_path, fps)
 
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             break
 
-        for frames_info in frames_infos_list:
+        for frames_info in frames_info_list:
             if frames_info['frame'] == frame_number:
                 model_name = frames_info['model']
 
-                if pixelation == 'label':
-                    draw_label(frame, frames_info, model_name, label_colorr)
-                elif pixelation == 'blur':
-                    draw_blur(frame, frames_info, model_name, label_colorr)
-                elif pixelation == 'checkered':
-                    draw_chess(frame, frames_info, model_name, label_colorr)
+                if pixelation == Pixelation.label:
+                    draw_label(frame, frames_info, model_name, label_color)
+                elif pixelation == Pixelation.blur:
+                    draw_blur(frame, frames_info, model_name, label_color)
+                elif pixelation == Pixelation.checkered:
+                    draw_check(frame, frames_info, model_name, label_color)
+
         if output_path:
             out_put_video.write(frame)
         else:

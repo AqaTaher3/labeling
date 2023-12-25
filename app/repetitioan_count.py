@@ -14,17 +14,17 @@ def count_frames(input_video):
     return frame_count
 
 
-def frame_repetition_count_check(input_video, Results):
+def check_frame_repetition_count(input_video, results):
     output_video = app_dir + '/new_video/counted_video.mp4'
     clip = VideoFileClip(input_video)
-    frames_of_label_studio = int(Results[0]['value']['framesCount'])
-    framesCounts = Results[0]['value']['framesCount']
-    duration = Results[0]['value']['duration']
+    frames_of_label_studio = int(results[0]['value']['framesCount'])
+    framesCounts = results[0]['value']['framesCount']
+    duration = results[0]['value']['duration']
     fps = framesCounts/duration
     frame_count = count_frames(input_video)
     print('counts of your video frames:', frame_count)
 
-    if frames_of_label_studio > frame_count:
+    if frames_of_label_studio - frame_count > 10:
         print('count of your json file frames:', frames_of_label_studio)
         print('repetition_frames_count ...')
 
