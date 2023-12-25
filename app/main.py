@@ -68,8 +68,36 @@ def check_pixelation(label):
         exit()
 
 
+def read_input(input_file):
+    if input_file:
+        print('input_file')
+        with open(input_file, 'r') as input_info:
+            content = input_info.readlines()
+            input = []
+            for con in content:
+                b = con.replace("\n", "")
+                input.append(b)
+            json_file = (work_dir+'/input/' + input[0])
+            video_file = (work_dir+'/input/' + input[1])
+            pixelation = input[2]
+            color = input[3]
+            label_color = make_color_format(color)
+        check_pixelation(pixelation)
+        return json_file, video_file, pixelation, label_color
+    else:
+        print('input_file_doesnt found')
+
+
+def make_color_format(input_color):
+    nospaces = input_color.replace("(", "")
+    nospaces = nospaces.replace(")", "")
+    RGB = nospaces.split(",")
+    return ((int(RGB[0]), int(RGB[1]), int(RGB[2])))
+
+
 def main():
-    json_file, video_path, pixelation, label_color = read_input(inputs_text_file_path)
+    json_file, video_path, pixelation, label_color = \
+        read_input(inputs_text_file_path)
     final_output_path = output_path(pixelation)
     res, fps, = reding_data_from_json(json_file)
     delete_directory_contents(app_dir+'/new_video')
@@ -96,31 +124,4 @@ def main():
     delete_directory_contents(app_dir+'/new_video')
 
 
-def make_color_format(input_color):
-    nospaces = input_color.replace("(", "")
-    nospaces = nospaces.replace(")", "")
-    RGB = nospaces.split(",")
-    return ((int(RGB[0]), int(RGB[1]), int(RGB[2])))
-
-
-def read_input(input_file):
-    if input_file:
-        print('input_file')
-        with open(input_file, 'r') as input_info:
-            content = input_info.readlines()
-            input = []
-            for con in content:
-                b = con.replace("\n", "")
-                input.append(b)
-            json_file = (work_dir+'/input/' + input[0])
-            video_file = (work_dir+'/input/' + input[1])
-            pixelation = input[2]
-            color = input[3]
-            label_color = make_color_format(color)
-        check_pixelation(pixelation)
-        return json_file, video_file, pixelation, label_color
-    else:
-        print('input_file_doesnt found')
-
 main()
-
